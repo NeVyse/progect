@@ -1,14 +1,31 @@
 #ifndef VEHICLE_H
 #define VEHICLE_H
 #include <iostream>
+#include <fstream>
 #include <string>
+using namespace std;
+
 class Vehicle {
 public:
-    virtual ~Vehicle() {
-        std::cout << "Destructor of Vehicle called." << std::endl;
+    Vehicle() : fullName("-") {}
+    Vehicle(const string& name) : fullName(name) {}
+    virtual ~Vehicle() {}
+
+    virtual void save(ofstream& file) = 0;
+    virtual void load(ifstream& file) = 0;
+    virtual void menu() = 0;
+    virtual void show() const {
+        cout << "Full Name: " << fullName << endl;
     }
-    virtual void input() = 0; // pure virtual function for input
-    virtual void output() const = 0; // pure virtual function for output
-    virtual std::string getType() const = 0; // to identify type of vehicle
+
+    void setName(const string& name) {
+        fullName = name;
+    }
+
+    string getName() const {
+        return fullName;
+    }
+protected:
+    string fullName;
 };
-#endif // VEHICLE_H
+#endif //VEHICLE_H

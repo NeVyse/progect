@@ -1,79 +1,115 @@
 #include <iostream>
 #include "Keeper.h"
 #include "Car.h"
-#include "Motorcycle.h"
 #include "Bus.h"
-void menu() {
-    std::cout << "Menu:\n";
-    std::cout << "1. Add Car\n";
-    std::cout << "2. Add Motorcycle\n";
-    std::cout << "3. Add Bus\n";
-    std::cout << "4. Remove Vehicle\n";
-    std::cout << "5. Display Vehicles\n";
-    std::cout << "6. Save to File\n";
-    std::cout << "7. Load from File\n";
-    std::cout << "0. Exit\n";
-}
-int main() {
+#include "Motorcycle.h"
+using namespace std;
+int main() 
+{
     Keeper keeper;
     int choice;
     do {
-        menu();
-        std::cout << "Enter your choice: ";
-        std::cin >> choice;
-        try {
-            switch (choice) {
+        cout << "1. Add car\n";
+        cout << "2. Add sailer\n";
+        cout << "3. Add boat\n";
+        cout << "4. Show all cargo ships\n";
+        cout << "5. Delete cargo ship\n";
+        cout << "6. Save to file\n";
+        cout << "7. Download from file\n";
+        cout << "8. Edit an entry\n";
+        cout << "0. Exit\n";
+        cin >> choice;
+
+        switch (choice)
+        {
                 case 1: {
-                    Car* car = new Car();
-                    car->input();
-                    keeper.addVehicle(car);
-                    break;
+                   string brand, model, engine, color, transmission; 
+                cout << "Enter brand: "; 
+                cin.ignore(); 
+                getline(cin, brand); 
+                cout << "Enter model: "; 
+                getline(cin, model);                  
+                cout << "Enter engine volume: "; 
+                getline(cin, engine ); 
+                cout << "Enter color: "; 
+                getline(cin, color); 
+                cout << "Enter transmission type: "; 
+                getline(cin, transmission); 
+                    keeper.add(new Car(brand, model, engine, color, transmission));
+                    break;  
                 }
                 case 2: {
-                    Motorcycle* motorcycle = new Motorcycle();
-                    motorcycle->input();
-                    keeper.addVehicle(motorcycle);
+                    string name, type, title, target, length, speed, crew;
+                    cout << "Enter name: ";
+                    cin.ignore();
+                    getline(cin, name);
+                    cout << "Enter type: ";
+                    getline(cin, type);
+                    cout << "Enter title: ";
+                    getline(cin, title);
+                    cout << "Enter target: ";
+                    getline(cin, target);
+                    cout << "Enter length: ";
+                    getline(cin, length);
+                    cout << "Enter speed: ";
+                    getline(cin, speed);
+                    cout << "Enter crew: ";
+                    getline(cin, crew);
+                    keeper.add(new Sailer(name, type, title, target, length, speed, crew));
                     break;
                 }
                 case 3: {
-                    Bus* bus = new Bus();
-                    bus->input();
-                    keeper.addVehicle(bus);
+                    string name, target, material, RP, speed, people;
+                    cout << "Enter name: ";
+                    cin.ignore();
+                    getline(cin, name);
+                    cout << "Enter target: ";
+                    getline(cin, target);
+                    cout << "Enter material: ";
+                    getline(cin, material);
+                    cout << "Enter RP: ";
+                    getline(cin, RP);
+                    cout << "Enter speed: ";
+                    getline(cin, speed);
+                    cout << "Enter people: ";
+                    getline(cin, people);
+                    keeper.add(new Boat(name, target, material, RP, speed, people));
                     break;
                 }
-                case 4: {
+                case 4:
+                    keeper.show();
+                break;
+                case 5: {
                     int index;
-                    std::cout << "Enter index to remove: ";
-                    std::cin >> index;
-                    keeper.removeVehicle(index);
+                    cout << "Enter index of the cargo ship to delete: ";
+                    cin >> index;
+                    keeper.remove(index - 1);
                     break;
                 }
-                case 5:
-                    keeper.displayVehicles();
-                    break;
                 case 6: {
-                    std::string filename;
-                    std::cout << "Enter filename to save: ";
-                    std::cin >> filename;
-                    keeper.saveToFile(filename);
+                    string filename;
+                    cout << "Enter file's name to save: ";
+                    cin >> filename;
+                    keeper.save(filename);
                     break;
                 }
                 case 7: {
-                    std::string filename;
-                    std::cout << "Enter filename to load: ";
-                    std::cin >> filename;
-                    keeper.loadFromFile(filename);
+                    string filename;
+                    cout << "Enter file's name to download: ";
+                    cin >> filename;
+                    keeper.load(filename);
                     break;
                 }
-                case 0:
-                    std::cout << "Exiting...\n";
+                case 8: {
+                    int index;
+                    cout << "Enter index of the cargo to edit: ";
+                    cin >> index;
+                    keeper.rename(index - 1);
                     break;
-                default:
-                    std::cout << "Invalid choice. Please try again.\n";
+                }
             }
-        } catch (const std::exception& e) {
-            std::cerr << "Error: " << e.what() << std::endl;
         }
-    } while (choice != 0);
-    return 0;
+    while (choice != 0);
+
+return 0;
 }
