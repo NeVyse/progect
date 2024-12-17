@@ -1,5 +1,5 @@
-#ifndef VEHICLE_H
-#define VEHICLE_H
+#ifndef LAB1CCP_VEHICLE_H
+#define LAB1CCP_VEHICLE_H
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -28,4 +28,4 @@ public:
 protected:
     string fullName;
 };
-#endif //VEHICLE_H
+#endif //LAB1CCP_VEHICLE_H

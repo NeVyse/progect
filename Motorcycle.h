@@ -1,9 +1,9 @@
-#ifndef LAB1CCP_MOTOCYCLE_H
-#define LAB1CCP_MOTOCYCLE_H
+#ifndef LAB1CCP_MOTORCYCLE_H
+#define LAB1CCP_MOTORCYCLE_H
 
 #include "Vehicle.h"
 #include <string>
-class Motocycle: public Vehicle
+class Motorcycle: public Vehicle
 {
 private:
     string brand;
@@ -18,8 +18,8 @@ protected:
     string fullPower;
     string fullTerrain;
 public:
-    Motocycle() : brand(""), model(""), engine(""), power(""),  terrain("") {}
-    Motocycle(const string& b, const string& m, const string& e, const string& p, const string& t )
+    Motorcycle() : brand(""), model(""), engine(""), power(""),  terrain("") {}
+    Motorcycle(const string& b, const string& m, const string& e, const string& p, const string& t )
         : fullBrand(b), fullModel(m), fullEngine(e), fullPower(p), fullTerrain(t) {}
 
     void save(ofstream& file) override;
@@ -62,4 +62,4 @@ public:
         return fullTerrain;
     }
 };
-#endif //LAB1CCP_MOTOCYCLE_H
+#endif //LAB1CCP_MOTORCYCLE_H

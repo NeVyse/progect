@@ -1,59 +1,108 @@
 #include "Keeper.h"
+#include "Bus.h"
 #include "Car.h"
 #include "Motorcycle.h"
-#include "Bus.h"
+using namespace std;
+Keeper::Keeper() : vehicles(nullptr), counter(0) {}
+
 Keeper::~Keeper() {
-    for (auto vehicle : vehicles) {
-        delete vehicle;
+    clear();
+}
+
+void Keeper::clear() {
+    for (int i = 0; i < counter; ++i) {
+        delete vehicles[i];
     }
-    vehicles.clear();
+    delete[] vehicles;
+    counter = 0;
+     vehicles = nullptr;
 }
-void Keeper::addVehicle(Vehicle* vehicle) {
-    vehicles.push_back(vehicle);
+
+void Keeper::add(Vehicle* vehicle) {
+    Vehicle** temp = new Vehicle*[counter + 1];
+    for (int i = 0; i < counter; ++i) {
+        temp[i] = vehicles[i];
+    }
+    temp[counter] = vehicle;
+    delete[] vehicles;
+    vehicles = temp;
+    ++counter;
 }
-void Keeper::removeVehicle(int index) {
-    if (index < 0 || index >= vehicles.size()) {
-        throw std::out_of_range("Index out of range.");
+
+void Keeper::remove(int index) {
+    if (index < 0 || index >= counter) {
+        cerr << "Invalid index.\n";
+        return;
     }
     delete vehicles[index];
-    vehicles.erase(vehicles.begin() + index);
+    for (int i = index; i < counter - 1; ++i) {
+        vehicles[i] = vehicles[i + 1];
+    }
+    --counter;
 }
-void Keeper::displayVehicles() const {
-    for (size_t i = 0; i < vehicles.size(); ++i) {
-        std::cout << "Index " << i << ": ";
-        vehicles[i]->output();
+
+void Keeper::show() const {
+    for (int i = 0; i < counter; ++i) {
+        vehicles[i]->show();
+        cout << "-----------------------\n";
     }
 }
-void Keeper::saveToFile(const std::string& filename) const {
-    std::ofstream outFile(filename, std::ios::binary);
-    if (!outFile) {
-        throw std::runtime_error("Could not open file for writing.");
+
+void Keeper::save(const string& filename) {
+    ofstream file(filename, ios::trunc);
+    if (!file) {
+        cerr << "Error opening a file for writing.\n";
+        return;
     }
-    for (const auto& vehicle : vehicles) {
-        outFile << vehicle->getType() << std::endl;
-        // Add serialization logic for each vehicle type
+
+    for (int i = 0; i < counter; ++i) {
+        if (dynamic_cast<Car*>(vehicles[i])) {
+            file << "[car]\n";
+        }else if (dynamic_cast<Bus*>(vehicles[i])) {
+            file << "[bus]\n";
+        }else if (dynamic_cast<Motorcycle*>(vehicles[i])) {
+            file << "[motorcycle]\n";
+        }
+        vehicles[i]->save(file);
     }
-    outFile.close();
+    file.close();
+    cout << "Saved.\n";
 }
-void Keeper::loadFromFile(const std::string& filename) {
-    std::ifstream inFile(filename, std::ios::binary);
-    if (!inFile) {
-        throw std::runtime_error("Could not open file for reading.");
+
+void Keeper::load(const string& filename) {
+    ifstream file(filename);
+    if (!file) {
+        cerr << "Error opening the file for reading.\n";
+        return;
     }
-    std::string type;
-    while (inFile >> type) {
+
+    clear();
+    string line;
+    while (getline(file, line)) {
         Vehicle* vehicle = nullptr;
-        if (type == "Car") {
+        if (line == "[car]"){
             vehicle = new Car();
-        } else if (type == "Motorcycle") {
-            vehicle = new Motorcycle();
-        } else if (type == "Bus") {
+        }else if (line == "[bus]") {
             vehicle = new Bus();
+        } else if (line == "[motorcycle]") {
+            vehicle = new Motorcycle();
         }
         if (vehicle) {
-            vehicle->input(); // This will need to be replaced with actual deserialization
-            addVehicle(vehicle);
+            vehicle->load(file);
+            add(vehicle);
         }
     }
-    inFile.close();
+    file.close();
+    cout << "The data is downloaded from a file.\n";
+
+}
+
+void Keeper::rename(int index){
+    if (index < 0 || index >= counter) {
+        cerr << "Invalid index.\n";
+        return;
+    }
+    vehicles[index]->menu();
+    vehicles[index]->show();
+    cout << "-----------------------\n";
 }

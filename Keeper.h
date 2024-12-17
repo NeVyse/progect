@@ -6,7 +6,7 @@
 
 class Keeper {
 private:
-    Vehicle** vehicle;
+    Vehicle** vehicles;
     int counter;
 
 public:

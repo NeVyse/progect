@@ -10,10 +10,10 @@ int main()
     int choice;
     do {
         cout << "1. Add car\n";
-        cout << "2. Add sailer\n";
-        cout << "3. Add boat\n";
-        cout << "4. Show all cargo ships\n";
-        cout << "5. Delete cargo ship\n";
+        cout << "2. Add bus\n";
+        cout << "3. Add motorcycle\n";
+        cout << "4. Show all cargo vehicle\n";
+        cout << "5. Delete cargo vehicle\n";
         cout << "6. Save to file\n";
         cout << "7. Download from file\n";
         cout << "8. Edit an entry\n";
@@ -39,41 +39,35 @@ int main()
                     break;  
                 }
                 case 2: {
-                    string name, type, title, target, length, speed, crew;
-                    cout << "Enter name: ";
+                    string brand, model, seat, total, finaldest;
+                    cout << "Enter brand: ";
                     cin.ignore();
-                    getline(cin, name);
-                    cout << "Enter type: ";
-                    getline(cin, type);
-                    cout << "Enter title: ";
-                    getline(cin, title);
-                    cout << "Enter target: ";
-                    getline(cin, target);
-                    cout << "Enter length: ";
-                    getline(cin, length);
-                    cout << "Enter speed: ";
-                    getline(cin, speed);
-                    cout << "Enter crew: ";
-                    getline(cin, crew);
-                    keeper.add(new Sailer(name, type, title, target, length, speed, crew));
+                    getline(cin, brand);
+                    cout << "Enter model: ";
+                    getline(cin, model);
+                    cout << "Enter seating capacity: ";
+                    getline(cin, seat);
+                    cout << "Enter total capacity: ";
+                    getline(cin, total);
+                    cout << "Enter final destination: ";
+                    getline(cin, finaldest);
+                    keeper.add(new Bus(brand, model, seat, total, finaldest));
                     break;
                 }
                 case 3: {
-                    string name, target, material, RP, speed, people;
-                    cout << "Enter name: ";
+                    string brand, model, engine, power, terrain;
+                    cout << "Enter brand: ";
                     cin.ignore();
-                    getline(cin, name);
-                    cout << "Enter target: ";
-                    getline(cin, target);
-                    cout << "Enter material: ";
-                    getline(cin, material);
-                    cout << "Enter RP: ";
-                    getline(cin, RP);
-                    cout << "Enter speed: ";
-                    getline(cin, speed);
-                    cout << "Enter people: ";
-                    getline(cin, people);
-                    keeper.add(new Boat(name, target, material, RP, speed, people));
+                    getline(cin, brand);
+                    cout << "Enter model: ";
+                    getline(cin, model);
+                    cout << "Enter engine: ";
+                    getline(cin, engine);
+                    cout << "Enter power: ";
+                    getline(cin, power);
+                    cout << "Enter terrain: ";
+                    getline(cin, terrain);
+                    keeper.add(new Motorcycle(brand, model, engine, power, terrain));
                     break;
                 }
                 case 4:
@@ -81,7 +75,7 @@ int main()
                 break;
                 case 5: {
                     int index;
-                    cout << "Enter index of the cargo ship to delete: ";
+                    cout << "Enter index of the cargo vehicle to delete: ";
                     cin >> index;
                     keeper.remove(index - 1);
                     break;
